@@ -62,26 +62,8 @@ pipeline {
                 }
             }
         }
-        stage('dockerizing project by dockerfile') {
-            agent any
 
-            steps {
-                sh '''
-        		 docker build -t $IMAGE_NAME:$BUILD_NUMBER .
-        		 docker tag $IMAGE_NAME:$BUILD_NUMBER $IMAGE_NAME:latest
-
-        		 '''
-            }
-            post {
-                success {
-                    echo 'success dockerizing project'
-                }
-                failure {
-                    error 'fail dockerizing project' // exit pipeline
-                }
-            }
-        }
-        stage('upload aws ECR') {
+        stage('docker build and push to ecr') {
             steps {
                 script{
                     // cleanup current user docker credentials
@@ -89,8 +71,8 @@ pipeline {
 
 
                     docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:${AWS_CREDENTIAL_NAME}") {
-                      docker.image("${IMAGE_NAME}:${BUILD_NUMBER}").push()
-                      docker.image("${IMAGE_NAME}:latest").push()
+                      def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                      image.push()
                     }
 
                 }
