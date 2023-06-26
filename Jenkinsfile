@@ -70,7 +70,7 @@ pipeline {
                     sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
 
-                    docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:${AWS_CREDENTIAL_NAME}") {
+                    docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:AWSCredentials") {
                       def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
                       image.push()
                     }
