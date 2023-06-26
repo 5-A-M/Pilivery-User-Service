@@ -69,6 +69,8 @@ pipeline {
                     // cleanup current user docker credentials
                     sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
+                    echo "Success Delete Docker Config"
+
 
                     docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:AWSCredentials") {
                       def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
