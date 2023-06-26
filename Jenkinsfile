@@ -1,8 +1,5 @@
 pipeline {
-    agent {
-        label 'docker'
-    }
-
+    agent any
     options {
         timeout(time: 1, unit: 'HOURS') // set timeout 1 hour
     }
@@ -66,6 +63,8 @@ pipeline {
             }
         }
         stage('dockerizing project by dockerfile') {
+            agent any
+
             steps {
                 sh '''
         		 docker build -t $IMAGE_NAME:$BUILD_NUMBER .
