@@ -66,8 +66,7 @@ pipeline {
         stage('docker build and push to ecr') {
             steps {
                 script{
-                    // cleanup current user docker credentials
-                    sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
+                    // cleanup current user docker credentials                   sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
                     echo "Success Delete Docker Config"
 

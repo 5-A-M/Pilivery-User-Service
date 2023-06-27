@@ -33,6 +33,7 @@ public class UserController {
         User user = mapper.dtoToUser(userDto);
         log.error("user = {}", user.getUserStatus());
         log.error("user = {}", user.getEmail());
+        System.out.println("1" + userDto);
         userService.joinUser(user);
         String response = "회원가입이 완료되었습니다.";
         return new ResponseEntity(response, HttpStatus.CREATED);

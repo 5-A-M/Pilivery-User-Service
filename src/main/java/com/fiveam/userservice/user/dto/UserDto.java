@@ -14,6 +14,7 @@ public class UserDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @ToString
     public static class Post {
         @NotBlank
         private String email;
