@@ -13,7 +13,7 @@ pipeline {
 
         AWS_CREDENTIAL_NAME = credentials('AWSCredentials')
         ECR_PATH = credentials('ecrPath')
-        IMAGE_NAME = 'user-svc'
+        IMAGE_NAME = 'user-service'
         REGION = credentials('region')
     }
     stages{
