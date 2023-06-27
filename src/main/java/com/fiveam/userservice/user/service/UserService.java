@@ -46,12 +46,6 @@ public class UserService {
         createRole(user);
         User newUser = userRepository.save(user);
         newUser.setCartId(makeCart(newUser));
-        System.out.println(newUser);
-        try {
-            userRepository.save(newUser);
-        } catch (Exception e) {
-            System.out.println("error is: " + e.getMessage());
-        }
         return newUser;
     }
 
