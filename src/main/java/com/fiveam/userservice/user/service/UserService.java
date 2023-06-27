@@ -44,10 +44,15 @@ public class UserService {
         userInfoFilter.filterUserInfo(user);
         encodePassword(user);
         createRole(user);
-        user = userRepository.save(user);
-        System.out.println(user);
-        makeCart(user);
-        return user;
+        User newUser = userRepository.save(user);
+        newUser.setCartId(makeCart(newUser));
+        System.out.println(newUser);
+        try {
+            userRepository.save(newUser);
+        } catch (Exception e) {
+            System.out.println("error is: " + e.getMessage());
+        }
+        return newUser;
     }
 
 
@@ -134,11 +139,8 @@ public class UserService {
         throw new AuthenticationServiceException("Authentication exception");
     }
 
-    private void makeCart( User user ){
-        Long cartId = itemServiceClient.createCart(user.getUserId());
-        user.setCartId(cartId);
-        System.out.println(cartId + " " + user.getUserId());
-        userRepository.save(user);
+    private Long makeCart( User user ){
+        return itemServiceClient.createCart(user.getUserId());
     }
 
     public User findUserById(Long userId) {
