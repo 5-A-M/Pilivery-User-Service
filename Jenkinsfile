@@ -12,9 +12,9 @@ pipeline {
         TARGET_BRANCH = 'master'
 
         AWS_CREDENTIAL_NAME = credentials('AWSCredentials')
-        ECR_PATH = '806308213817.dkr.ecr.ap-northeast-2.amazonaws.com'
+        ECR_PATH = credentials('ecrPath')
         IMAGE_NAME = 'user-service'
-        REGION = 'ap-northeast-2'
+        REGION = credentials('region')
     }
     stages{
         stage('init') {
