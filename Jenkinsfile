@@ -8,7 +8,7 @@ pipeline {
         PROFILE = 'local'
 
         REPOSITORY_CREDENTIAL_ID = credentials('GitCredential')
-        REPOSITORY_URL = credentials('REPOSITORY_URL')
+        REPOSITORY_URL = credentials('RepositoryUrl')
         TARGET_BRANCH = 'master'
 
         AWS_CREDENTIAL_NAME = credentials('AWSCredentials')
