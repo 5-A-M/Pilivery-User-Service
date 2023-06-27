@@ -50,7 +50,7 @@ pipeline {
         stage('build project') {
             steps {
                 sh '''
-        		 echo "Fake Build Start."
+        		 ./gradlew clean build
         		 '''
             }
             post {
