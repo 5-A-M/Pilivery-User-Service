@@ -8,6 +8,7 @@ pipeline {
         PROFILE = 'local'
 
         REPOSITORY_CREDENTIAL_ID = credentials('GitCredential')
+        REPOSITORY_URL = credentials('RepositoryUrl')
         TARGET_BRANCH = 'master'
 
         AWS_CREDENTIAL_NAME = credentials('AWSCredentials')
@@ -32,7 +33,7 @@ pipeline {
         }
         stage('clone project') {
             steps {
-                git url: credentials('RepositoryUrl'),
+                git url: "$REPOSITORY_URL",
                     branch: "$TARGET_BRANCH",
                     credentialsId: "$REPOSITORY_CREDENTIAL_ID"
                 sh "ls -al"
