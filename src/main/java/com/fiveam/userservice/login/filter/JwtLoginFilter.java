@@ -33,6 +33,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     @SneakyThrows
     public Authentication attemptAuthentication( HttpServletRequest request, HttpServletResponse response ) throws AuthenticationException{
+        log.info("Enter User Authentication Filter With JWT Token");
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
 

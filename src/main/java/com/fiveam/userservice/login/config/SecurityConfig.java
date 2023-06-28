@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .csrf().disable()
-                .cors(withDefaults())
+//                .cors(withDefaults())
                 .exceptionHandling()
                 .accessDeniedHandler(new UserAccessDeniedHandler())
                 .authenticationEntryPoint(new UserAuthenticationEntryPoint())

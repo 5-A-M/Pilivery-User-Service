@@ -56,6 +56,7 @@ public class UserService {
         return loginUser;
     }
 
+    @Transactional
     public User updateUser( UserDto.Post userDto ){
 
         userInfoFilter.filterUpdateUser(userDto);
@@ -69,6 +70,9 @@ public class UserService {
 
         String encodedPwd = passwordEncoder.encode(userDto.getPassword());
         loginUser.setPassword(encodedPwd);
+
+        userRepository.save(loginUser);
+        log.info("유저 정보 수정 완료: " + userDto.getRealName());
 
         return loginUser;
     }

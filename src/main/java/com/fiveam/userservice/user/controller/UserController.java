@@ -31,8 +31,6 @@ public class UserController {
     @PostMapping
     public ResponseEntity singUpUser( @Valid @RequestBody UserDto.Post userDto ){
         User user = mapper.dtoToUser(userDto);
-        log.error("user = {}", user.getUserStatus());
-        log.error("user = {}", user.getEmail());
         System.out.println("1" + userDto);
         userService.joinUser(user);
         String response = "회원가입이 완료되었습니다.";
@@ -46,7 +44,7 @@ public class UserController {
     }
     @PatchMapping
     public ResponseEntity updateInfo( @Valid @RequestBody UserDto.Post userDto ){
-        log.error("컨트롤러 진입");
+        log.info("유저 정보 수정 진입: " + userDto.getRealName());
         User user = userService.updateUser(userDto);
         UserDto.Response userInfo = mapper.userToDto(user, HttpMethod.PATCH);
         return new ResponseEntity<>(userInfo, HttpStatus.ACCEPTED);
