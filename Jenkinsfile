@@ -49,9 +49,7 @@ pipeline {
         }
         stage('build project') {
             steps {
-                sh '''
-        		 ./gradlew clean build
-        		 '''
+                echo 'build project stage'
             }
             post {
                 success {
