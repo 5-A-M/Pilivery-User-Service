@@ -49,9 +49,18 @@ pipeline {
         }
         stage('build project') {
             steps {
-                sh '''
-        		 ./gradlew clean build
-        		 '''
+                try{
+                    sh '''
+                    #!/bin.bash
+                    cat>Dockerfile<<-EOF
+                    FROM openjdk:11
+                    WORKDIR /app
+                    RUN sudo cat /tmp/application.yml > /app/src/main/resources/application.yml
+                    CMD ["./gradlew", "clean", "build"]
+                    COPY /build/libs/user-service-1.0.jar userSVC.jar
+                    CMD ["java", "-jar", "userSVC.jar"]
+                    EOF'''
+                }
             }
             post {
                 success {
