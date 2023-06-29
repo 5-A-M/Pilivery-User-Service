@@ -51,15 +51,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    #!/bin/bash
-                    cat << EOF > Dockerfile
-                    FROM openjdk:11
-                    WORKDIR /app
-                    RUN mkdir -p /app/src/main/resources
-                    RUN cp /tmp/application.yml /app/src/main/resources/application.yml
-                    RUN ./gradlew clean build
-                    COPY build/libs/user-service-1.0.jar userSVC.jar
-                    CMD java -jar userSVC.jar
+                    sudo cat /tmp/application.yml > /app/src/main/resources/application.yml
+                    ./gradlew clean build
                     '''
                 }
             }
