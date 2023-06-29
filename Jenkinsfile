@@ -49,13 +49,9 @@ pipeline {
         }
         stage('build project') {
             steps {
-                script {
-                    sh '''
-                    #!/bin/bash
-                    sudo cat /tmp/application.yml > src/main/resources/application.yml
-                    ./gradlew clean build
-                    '''
-                }
+                sh '''
+        		 ./gradlew clean build 
+        		 '''
             }
             post {
                 success {
@@ -70,7 +66,8 @@ pipeline {
         stage('docker build and push to ecr') {
             steps {
                 script{
-                    // cleanup current user docker credentials                   sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
+                    // cleanup current user docker credentials
+                    sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
                     echo "Success Delete Docker Config"
 
