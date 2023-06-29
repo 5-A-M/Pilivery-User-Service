@@ -50,7 +50,7 @@ pipeline {
         stage('build project') {
             steps {
                 sh '''
-                ls -al /tmp
+                ls -al src/main/resources/
         		 ./gradlew clean build 
         		 '''
             }
