@@ -55,7 +55,7 @@ pipeline {
                     cat << EOF > Dockerfile
                     FROM openjdk:11
                     WORKDIR /app
-                    RUN sudo cat /tmp/application.yml > .src/main/resources/application.yml
+                    RUN sudo cat /home/application.yml > .src/main/resources/application.yml
                     RUN ./gradlew clean build
                     COPY build/libs/user-service-1.0.jar userSVC.jar
                     CMD java -jar userSVC.jar
