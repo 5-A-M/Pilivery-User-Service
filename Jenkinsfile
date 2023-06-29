@@ -51,7 +51,7 @@ pipeline {
             steps {
                 sh '''
                 cat /tmp/application.yml > src/main/resources/application.yml
-                head src/main/resources/application.yml
+                cat src/main/resources/application.yml
         		 ./gradlew clean build 
         		 '''
             }
