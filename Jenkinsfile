@@ -49,19 +49,21 @@ pipeline {
         }
         stage('build project') {
             steps {
-                script{
+                script {
                     sh '''
-                    #!/bin.bash
-                    cat>Dockerfile<<-EOF
+                    #!/bin/bash
+                    cat << EOF > Dockerfile
                     FROM openjdk:11
                     WORKDIR /app
                     RUN sudo cat /tmp/application.yml > /app/src/main/resources/application.yml
-                    CMD ["./gradlew", "clean", "build"]
-                    COPY /build/libs/user-service-1.0.jar userSVC.jar
-                    CMD ["java", "-jar", "userSVC.jar"]
-                    EOF'''
+                    RUN ./gradlew clean build
+                    COPY build/libs/user-service-1.0.jar userSVC.jar
+                    CMD java -jar userSVC.jar
+                    EOF
+                    '''
                 }
             }
+
             post {
                 success {
                     echo 'success build project'
