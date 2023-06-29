@@ -50,7 +50,7 @@ pipeline {
         stage('build project') {
             steps {
                 sh '''
-                cat /tmp/application.yml > /app/src/main/resources/application.yml
+                cat /tmp/application.yml > src/main/resources/application.yml
         		 ./gradlew clean build 
         		 '''
             }
