@@ -51,6 +51,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    #!/bin/bash
                     sudo cat /tmp/application.yml > src/main/resources/application.yml
                     ./gradlew clean build
                     '''
