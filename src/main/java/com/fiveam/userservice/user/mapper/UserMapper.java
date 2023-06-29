@@ -33,6 +33,7 @@ public interface UserMapper {
     default UserDto.Response userToDto( User user , HttpMethod method){
 
         return UserDto.Response.builder()
+                .id(user.getUserId())
                 .address(user.getAddress())
                 .phone(user.getPhone())
                 .displayName(user.getDisplayName())

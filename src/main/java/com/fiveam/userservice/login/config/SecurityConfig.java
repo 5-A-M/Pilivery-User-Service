@@ -1,6 +1,11 @@
 package com.fiveam.userservice.login.config;
 
 
+import com.fiveam.userservice.login.handler.UserAccessDeniedHandler;
+import com.fiveam.userservice.login.handler.UserAuthSuccessHandler;
+import com.fiveam.userservice.login.handler.UserAuthenticationEntryPoint;
+import com.fiveam.userservice.login.jwt.JwtToken;
+import com.fiveam.userservice.redis.RedisConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -11,13 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import com.fiveam.userservice.login.handler.UserAccessDeniedHandler;
-import com.fiveam.userservice.login.handler.UserAuthSuccessHandler;
-import com.fiveam.userservice.login.handler.UserAuthenticationEntryPoint;
-import com.fiveam.userservice.login.jwt.JwtToken;
-import com.fiveam.userservice.redis.RedisConfig;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

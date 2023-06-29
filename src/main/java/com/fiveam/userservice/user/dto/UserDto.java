@@ -71,6 +71,7 @@ public class UserDto {
     @Getter
     @Builder
     public static class Response implements Serializable {
+        private Long id;
 
         private String email;
 
