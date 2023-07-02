@@ -57,6 +57,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
 
     private void redirect( HttpServletResponse response, PrincipalDetails principalDetails ) throws IOException{
         List<String> tokens = delegateToken(principalDetails.getUser(), jwtToken);
+        log.warn("Token: " + tokens);
         String uri = createURI(tokens.get(0), tokens.get(1), principalDetails).toString();
         response.sendRedirect(uri);
     }

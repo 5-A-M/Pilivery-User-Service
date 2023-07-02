@@ -1,5 +1,6 @@
 package com.fiveam.userservice.user.controller;
 
+import com.fiveam.userservice.response.UserInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -31,7 +32,6 @@ public class UserController {
     @PostMapping
     public ResponseEntity singUpUser( @Valid @RequestBody UserDto.Post userDto ){
         User user = mapper.dtoToUser(userDto);
-        System.out.println("1" + userDto);
         userService.joinUser(user);
         String response = "회원가입이 완료되었습니다.";
         return new ResponseEntity(response, HttpStatus.CREATED);
@@ -74,7 +74,10 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity findUserById(@PathVariable Long userId) {
-        return new ResponseEntity<>(userService.findUserById(userId), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(
+                UserInfoResponseDto.fromEntity(userService.findUserById(userId)),
+                HttpStatus.ACCEPTED
+        );
     }
 
 }
