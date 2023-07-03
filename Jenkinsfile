@@ -51,8 +51,8 @@ pipeline {
         stage('clone secret file') {
             steps {
                 withCredentials([file(credentialsId: 'pilivery-backend-application-yml', variable: 'secretFile')]) {
-                    sh "mkdir src/main/resources"
-                    dir('src/main/resources') {
+                    sh "pwd & mkdir ./src/main/resources"
+                    dir('./src/main/resources') {
                         sh "cp ${secretFile} application.yml"
                     }
                 }
