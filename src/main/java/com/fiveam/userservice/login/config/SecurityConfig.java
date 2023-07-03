@@ -23,12 +23,13 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final JwtToken jwtToken;
+    private final RedisConfig redisConfig;
+
     @Bean
     PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-    private final JwtToken jwtToken;
-    private final RedisConfig redisConfig;
 
     @Bean
     public SecurityFilterChain filterChain( HttpSecurity http ) throws Exception{
