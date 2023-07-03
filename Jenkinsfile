@@ -8,7 +8,7 @@ pipeline {
         PROFILE = 'local'
 
         REPOSITORY_CREDENTIAL_ID = credentials('GitCredential')
-        REPOSITORY_URL = credentials('RepositoryUrl')
+        REPOSITORY_URL = credentials('UserServiceRepositoryUrl')
         TARGET_BRANCH = 'master'
 
         AWS_CREDENTIAL_NAME = credentials('AWSCredentials')
@@ -51,9 +51,9 @@ pipeline {
         stage('clone secret file') {
             steps {
                 withCredentials([file(credentialsId: 'pilivery-backend-application-yml', variable: 'secretFile')]) {
-                    sh "pwd & mkdir /var/lib/jenkins/workspace/user-service/src/main/resources"
+                    sh "pwd & mkdir /var/lib/jenkins/workspace/${IMAGE_NAME}/src/main/resources"
                     dir('./src/main/resources') {
-                        sh "cp ${secretFile} /var/lib/jenkins/workspace/user-service/src/main/resources/application.yml"
+                        sh "cp ${secretFile} /var/lib/jenkins/workspace/${IMAGE_NAME}/src/main/resources/application.yml"
                     }
                 }
             }
@@ -83,7 +83,6 @@ pipeline {
 
                     echo "Success Delete Docker Config"
 
-                    echo "${ECR_PATH}"
                     docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:AWSCredentials") {
                       def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
                       image.push()
