@@ -62,7 +62,6 @@ pipeline {
         stage('build project') {
             steps {
                 sh '''
-                tree ./
         		 ./gradlew clean build 
         		 '''
             }
