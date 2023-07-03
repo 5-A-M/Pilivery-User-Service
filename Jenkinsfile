@@ -52,7 +52,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'pilivery-backend-application-yml', variable: 'secretFile')]) {
                     sh "mkdir src/main/resources"
-                    sh "cp $secretFile src/main/resources/"
+                    sh "cp $secretFile src/main/resources/application.yml"
                 }
             }
         }
