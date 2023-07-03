@@ -47,11 +47,19 @@ pipeline {
                 }
             }
         }
+
+        stage('clone secret file') {
+            steps {
+                withCredentials([file(credentialsId: 'pilivery-backend-application-yml', variable: 'secretFile')]) {
+                    sh "cp $secretFile src/main/resources/application.yml"
+                }
+            }
+        }
+
         stage('build project') {
             steps {
                 sh '''
-                ls -al
-                cat /tmp/application.yml > src/main/resources/application.yml
+                tree ./
         		 ./gradlew clean build 
         		 '''
             }
