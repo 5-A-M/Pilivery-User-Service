@@ -83,7 +83,7 @@ pipeline {
 
                     echo "Success Delete Docker Config"
 
-
+                    echo "${ECR_PATH}"
                     docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:AWSCredentials") {
                       def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
                       image.push()
