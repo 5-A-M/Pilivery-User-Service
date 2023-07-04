@@ -70,7 +70,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     //회원가입할때도 여기로 온다.
     @Override
     protected boolean shouldNotFilter( HttpServletRequest request ) throws ServletException{
-        log.info("ShouldNotFilter 진입: ");
+        log.info("ShouldNotFilter Path: " + request.getRequestURI());
         request.getHeaderNames().asIterator().forEachRemaining(key -> {
             log.info("Header(" + key + "): " + request.getHeader(key));
         });
