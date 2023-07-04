@@ -71,36 +71,23 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter( HttpServletRequest request ) throws ServletException{
         log.info("ShouldNotFilter Path: " + request.getRequestURI());
-        request.getHeaderNames().asIterator().forEachRemaining(key -> {
-            log.info("Header(" + key + "): " + request.getHeader(key));
-        });
         String authorization = request.getHeader("Authorization"); // Authorization의 밸류값 획득
-        log.info("Authorization Header: " + authorization);
-
-        System.out.println("1");
 
         if(authorization == null){
-            log.error(NullPointerException.class.getSimpleName());
+            log.info("Authorization Header가 없는 사용자.");
             return true; //true면 예외 처리가 된다.
         }
 
-        System.out.println("2");
-
         if(! authorization.startsWith("Bearer ")){
-            log.error(MalformedJwtException.class.getSimpleName());
+            log.info("만료된 JWT Token 사용자 접근: " + MalformedJwtException.class.getSimpleName());
             return true;
         }
-
-        System.out.println("3");
 
         //로그아웃 됐을 때 토큰의 권한이 없어졌는지 확인, 토큰이 레디스에 있으면 로그아웃 된 것, true를 리턴하여 예외처리함.
         if(notVaildatedToken(request)){
-            System.out.println("4");
             log.error(ExpiredJwtException.class.getSimpleName());
             return true;
         }
-
-        System.out.println("5");
 
         return false;
     }
