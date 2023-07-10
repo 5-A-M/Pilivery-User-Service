@@ -150,7 +150,7 @@ pipeline {
                     def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
                     dir(helmWorkSpacePath) {
                       sh "git remote add helm ${HELM_REPOSITORY_URL}"
-                      sh "sed -i 's/tag: .*/tag: ${APP_VERSION}${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml"
+                      sh "sed -i 's/tag: .*/tag: ${APP_VERSION}${env.BUILD_NUMBER}/' ${IMAGE_NAME}/values.yaml"
                       sh "git config user.email '${GIT_EMAIL}'"
                       sh "git config user.name '${GIT_USERNAME}'"
                       sh "git add ${IMAGE_NAME}-helm/values.yaml"
