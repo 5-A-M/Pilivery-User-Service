@@ -162,9 +162,7 @@ pipeline {
 
             post {
                 success {
-                    echo 'Success Change Helm Chart And Commit'
-                    echo "Push Helm Chart..."
-                    gitPush()
+                    echo 'Success Change Helm Chart And Push'
                 }
                 failure {
                     error 'Fail to Change Helm Chart'
