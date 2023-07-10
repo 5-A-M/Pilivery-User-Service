@@ -147,17 +147,15 @@ pipeline {
                 script {
                     def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
                     dir(helmWorkSpacePath) {
-                        sh '''
-                          git remote add helm ${HELM_REPOSITORY_URL}
-                          sed -i s/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/ ${IMAGE_NAME}-helm/values.yaml
-                          git config user.email '${GIT_EMAIL}'
-                          git config user.name '${GIT_USERNAME}'
-                          git add ${IMAGE_NAME}-helm/values.yaml
-                          git commit -m 'Update Helm Chart ${IMAGE_NAME}:${env.BUILD_NUMBER}'
-                          git push helm ${HELM_TARGET_BRANCH}
-                        '''
+                      sh "git remote add helm ${HELM_REPOSITORY_URL}"
+                      sh "sed -i 's/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml"
+                      sh "git config user.email '${GIT_EMAIL}'"
+                      sh "git config user.name '${GIT_USERNAME}'"
+                      sh "git add ${IMAGE_NAME}-helm/values.yaml"
+                      sh "git commit -m 'Update Helm Chart ${IMAGE_NAME}:${env.BUILD_NUMBER}'"
+                      sh "git push helm ${HELM_TARGET_BRANCH}"
                     }
-                }
+                }${env.BUILD_NUMBER}
             }
 
             post {
