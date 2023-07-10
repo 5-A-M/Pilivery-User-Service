@@ -31,7 +31,7 @@ pipeline {
                 }
             }
         }
-        stage('clone project') {
+        stage('Git Clone Application Code') {
             steps {
                 git url: "$REPOSITORY_URL",
                     branch: "$TARGET_BRANCH",
@@ -48,7 +48,7 @@ pipeline {
             }
         }
 
-        stage('clone secret file') {
+        stage('Clone Application Secret') {
             steps {
                 withCredentials([file(credentialsId: 'pilivery-backend-application-yml', variable: 'secretFile')]) {
                     sh "pwd & mkdir /var/lib/jenkins/workspace/${IMAGE_NAME}/src/main/resources"
@@ -59,7 +59,7 @@ pipeline {
             }
         }
 
-        stage('build project') {
+        stage('Build Application') {
             steps {
                 sh '''
         		 ./gradlew clean build 
@@ -75,7 +75,7 @@ pipeline {
             }
         }
 
-        stage('docker build and push to ecr') {
+        stage('Docker Build And Push To ECR') {
             steps {
                 script{
                     // cleanup current user docker credentials
@@ -99,5 +99,44 @@ pipeline {
                 }
             }
         }
+
+        stage('Git Clone Helm Chart Repository') {
+            steps {
+                git url: "$REPOSITORY_URL",
+                    branch: "$TARGET_BRANCH",
+                    credentialsId: "$REPOSITORY_CREDENTIAL_ID"
+                sh "ls -al"
+            }
+        }
+
+        stage('Update Helm Chart And PUsh') {
+            steps {
+                // Helm 차트의 이미지 버전 정보 변경
+                // sh "sed -i 's/tag: .*/tag: v${env.BUILD_NUMBER}/' values.yaml"
+
+                // 변경된 Helm 차트 파일 커밋
+                // gitCommit('Update Helm chart')
+            }
+
+            post {
+                always {
+                    // 변경된 Helm 차트 파일 커밋 푸쉬
+                    // gitPush()
+                }
+            }
+        }
+
+
+        def gitCommit(message) {
+          sh "git config user.email '5am-production@naver.com'"
+          sh "git config user.name '5am-production'"
+          sh "git add values.yaml"
+          sh "git commit -m '${message}'"
+        }
+
+        def gitPush() {
+          sh "git push origin master"
+        }
+
     }
 }
