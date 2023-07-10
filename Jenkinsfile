@@ -113,7 +113,7 @@ pipeline {
             steps {
                 // Helm 차트의 이미지 버전 정보 변경
                 // sh "sed -i 's/tag: .*/tag: v${env.BUILD_NUMBER}/' values.yaml"
-
+                sh "ls -al"
                 // 변경된 Helm 차트 파일 커밋
                 // gitCommit('Update Helm chart')
             }
@@ -122,6 +122,14 @@ pipeline {
                 always {
                     // 변경된 Helm 차트 파일 커밋 푸쉬
                     // gitPush()
+                    echo "Helm Chart Update"
+                }
+
+                success {
+                    echo 'success build project'
+                }
+                failure {
+                    error 'fail build project' // exit pipeline
                 }
             }
         }
