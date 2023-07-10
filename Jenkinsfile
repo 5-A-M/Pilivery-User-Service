@@ -147,24 +147,26 @@ pipeline {
                 script {
                     def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
                     dir(helmWorkSpacePath) {
-                        sh "sed -i 's/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml"
-                        gitCommit('Update Helm chart ${IMAGE_NAME}: 1.0.${env.BUILD_NUMBER}')
+                        sh '''
+                          git remote add helm ${HELM_REPOSITORY_URL}
+                          sed -i 's/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml"
+                          git config user.email '${GIT_EMAIL}'
+                          git config user.name '${GIT_USERNAME}'
+                          git add ${IMAGE_NAME}-helm/values.yaml
+                          git commit -m '${message}'
+                        '''
                     }
                 }
             }
 
             post {
-                always {
-                    // 변경된 Helm 차트 파일 커밋 푸쉬
+                success {
+                    echo 'Success Change Helm Chart And Commit'
                     echo "Push Helm Chart..."
                     gitPush()
                 }
-
-                success {
-                    echo 'success build project'
-                }
                 failure {
-                    error 'fail build project' // exit pipeline
+                    error 'Fail to Change Helm Chart'
                 }
             }
         }
@@ -180,5 +182,5 @@ def gitCommit(message) {
 }
 
 def gitPush() {
-  sh "git push origin ${HELM_TARGET_BRANCH}"
+  sh "git push helm ${HELM_TARGET_BRANCH}"
 }
