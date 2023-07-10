@@ -176,5 +176,5 @@ def gitCommit(message) {
 }
 
 def gitPush() {
-  sh "git push origin master"
+  sh "git push origin ${HELM_TARGET_BRANCH}"
 }
