@@ -153,7 +153,7 @@ pipeline {
                           git config user.email '${GIT_EMAIL}'
                           git config user.name '${GIT_USERNAME}'
                           git add ${IMAGE_NAME}-helm/values.yaml
-                          git commit -m ${message}
+                          git commit -m 'Update Helm Chart ${IMAGE_NAME}:${env.BUILD_NUMBER}'
                         '''
                     }
                 }
