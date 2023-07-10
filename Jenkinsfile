@@ -172,6 +172,7 @@ pipeline {
 }
 
 def gitCommit(message) {
+  sh "git remote add origin ${HELM_REPOSITORY_URL}"
   sh "git config user.email '${GIT_EMAIL}'"
   sh "git config user.name '${GIT_USERNAME}'"
   sh "git add ${IMAGE_NAME}-helm/values.yaml"
