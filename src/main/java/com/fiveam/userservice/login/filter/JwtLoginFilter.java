@@ -52,8 +52,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = jwtToken.delegateAccessToken(user); //유저정보를 이용해 토큰생성
         String refreshToken = jwtToken.delegateRefreshToken(user);//리프레시 토큰 생성
 
-        response.setHeader("Authorization", "Bearer " + accessToken); // 응답 헤더에 토큰을 담는다.
-        response.setHeader("Refresh", refreshToken); //응답 헤더에 리프레시 토큰을 담는다.
+        response.setHeader("authorization", "Bearer " + accessToken); // 응답 헤더에 토큰을 담는다.
+        response.setHeader("refresh", refreshToken); //응답 헤더에 리프레시 토큰을 담는다.
         response.setHeader("userId", String.valueOf(user.getUserId()));
 
         if (user.getDisplayName() != null) {
