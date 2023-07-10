@@ -102,8 +102,8 @@ pipeline {
 
         stage('Git Clone Helm Chart Repository') {
             steps {
-                git url: "$REPOSITORY_URL",
-                    branch: "$TARGET_BRANCH",
+                git url: "$HELM_REPOSITORY_URL",
+                    branch: "$HELM_TARGET_BRANCH",
                     credentialsId: "$REPOSITORY_CREDENTIAL_ID"
                 sh "ls -al"
             }
