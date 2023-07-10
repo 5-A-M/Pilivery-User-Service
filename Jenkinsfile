@@ -103,7 +103,7 @@ pipeline {
             }
         }
 
-        stage("Clean Workspace") {
+        stage("Clean Previous Workspace") {
             steps {
                 echo '*********Clean Workspace*********'
                 deleteDir()
