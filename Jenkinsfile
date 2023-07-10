@@ -149,9 +149,9 @@ pipeline {
                     dir(helmWorkSpacePath) {
                         sh '''
                           git remote add helm ${HELM_REPOSITORY_URL}
-                          sed -i s/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/ ${IMAGE_NAME}-helm/values.yaml
-                          git config user.email ${GIT_EMAIL}
-                          git config user.name ${GIT_USERNAME}
+                          sed -i 's/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml
+                          git config user.email '${GIT_EMAIL}'
+                          git config user.name '${GIT_USERNAME}'
                           git add ${IMAGE_NAME}-helm/values.yaml
                           git commit -m ${message}
                         '''
