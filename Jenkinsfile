@@ -11,6 +11,9 @@ pipeline {
         REPOSITORY_URL = credentials('UserServiceRepositoryUrl')
         TARGET_BRANCH = 'master'
 
+        HELM_REPOSITORY_URL = credentials('HELM_REPOSITORY_URL')
+        HELM_TARGET_BRANCH = credentials('HELM_TARGET_BRANCH')
+
         AWS_CREDENTIAL_NAME = credentials('AWSCredentials')
         ECR_PATH = credentials('ecrPath')
         IMAGE_NAME = 'user-service'
