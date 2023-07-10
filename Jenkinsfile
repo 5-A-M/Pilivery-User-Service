@@ -125,18 +125,16 @@ pipeline {
                 }
             }
         }
-
-
-        def gitCommit(message) {
-          sh "git config user.email '5am-production@naver.com'"
-          sh "git config user.name '5am-production'"
-          sh "git add values.yaml"
-          sh "git commit -m '${message}'"
-        }
-
-        def gitPush() {
-          sh "git push origin master"
-        }
-
     }
+
+    def gitCommit(message) {
+              sh "git config user.email '5am-production@naver.com'"
+              sh "git config user.name '5am-production'"
+              sh "git add values.yaml"
+              sh "git commit -m '${message}'"
+            }
+
+            def gitPush() {
+              sh "git push origin master"
+            }
 }
