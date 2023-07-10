@@ -105,8 +105,13 @@ pipeline {
 
         stage("Clean Previous Workspace") {
             steps {
-                echo '*********Clean Workspace*********'
-                deleteDir()
+                script {
+                    def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
+                    dir(workspacePath) {
+                        echo '*********Clean Workspace*********'
+                        deleteDir()
+                    }
+                }
             }
 
             post {
@@ -121,14 +126,17 @@ pipeline {
 
         stage('Git Clone Helm Chart Repository') {
             steps {
-                git url: "$HELM_REPOSITORY_URL",
-                    branch: "$HELM_TARGET_BRANCH",
-                    credentialsId: "$REPOSITORY_CREDENTIAL_ID"
-                sh "ls -al"
+                def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
+                dir(workspacePath) {
+                    git url: "$HELM_REPOSITORY_URL",
+                        branch: "$HELM_TARGET_BRANCH",
+                        credentialsId: "$REPOSITORY_CREDENTIAL_ID"
+                    sh "ls -al"
+                }
             }
         }
 
-        stage('Update Helm Chart And PUsh') {
+        stage('Update Helm Chart And Push') {
             steps {
                 // Helm 차트의 이미지 버전 정보 변경
                 // sh "sed -i 's/tag: .*/tag: v${env.BUILD_NUMBER}/' values.yaml"
