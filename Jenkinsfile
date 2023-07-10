@@ -174,7 +174,7 @@ pipeline {
 def gitCommit(message) {
   sh "git config user.email '${GIT_EMAIL}'"
   sh "git config user.name '${GIT_USERNAME}'"
-  sh "git add values.yaml"
+  sh "git add ${IMAGE_NAME}-helm/values.yaml"
   sh "git commit -m '${message}'"
 }
 
