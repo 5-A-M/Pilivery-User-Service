@@ -20,16 +20,11 @@ pipeline {
         REGION = credentials('region')
     }
     stages{
-        stage('init') {
-            agent {
-                label 'app-workspace'
-            }
-
+        stage('Clean Workspace') {
             steps {
-                echo 'init stage'
+                echo '*********Clean Workspace*********'
                 deleteDir()
             }
-
             post {
                 success {
                     echo 'success init in pipeline'
@@ -39,12 +34,7 @@ pipeline {
                 }
             }
         }
-
         stage('Git Clone Application Code') {
-            agent {
-                label 'app-workspace'
-            }
-
             steps {
                 git url: "$REPOSITORY_URL",
                     branch: "$TARGET_BRANCH",
@@ -62,10 +52,6 @@ pipeline {
         }
 
         stage('Clone Application Secret') {
-            agent {
-                label 'app-workspace'
-            }
-
             steps {
                 withCredentials([file(credentialsId: 'pilivery-backend-application-yml', variable: 'secretFile')]) {
                     sh "pwd & mkdir /var/lib/jenkins/workspace/${IMAGE_NAME}/src/main/resources"
@@ -77,10 +63,6 @@ pipeline {
         }
 
         stage('Build Application') {
-            agent {
-                label 'app-workspace'
-            }
-
             steps {
                 sh '''
         		 ./gradlew clean build 
@@ -97,10 +79,6 @@ pipeline {
         }
 
         stage('Docker Build And Push To ECR') {
-            agent {
-                label 'app-workspace'
-            }
-
             steps {
                 script{
                     // cleanup current user docker credentials
@@ -125,11 +103,23 @@ pipeline {
             }
         }
 
-        stage('Git Clone Helm Chart Repository') {
-            agent {
-                label 'app-workspace'
+        stage("Clean Workspace") {
+            steps {
+                echo '*********Clean Workspace*********'
+                deleteDir()
             }
 
+            post {
+                success {
+                    echo 'success clean workspace'
+                }
+                failure {
+                    error 'fail clean workspace' // exit pipeline
+                }
+            }
+        }
+
+        stage('Git Clone Helm Chart Repository') {
             steps {
                 git url: "$HELM_REPOSITORY_URL",
                     branch: "$HELM_TARGET_BRANCH",
