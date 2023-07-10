@@ -39,6 +39,7 @@ pipeline {
             steps {
                 git url: "$REPOSITORY_URL",
                     branch: "$TARGET_BRANCH",
+                    credentialsId: "$REPOSITORY_CREDENTIAL_ID"
                 sh "ls -al"
             }
             post {
