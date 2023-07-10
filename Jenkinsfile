@@ -8,6 +8,7 @@ pipeline {
         PROFILE = 'local'
 
         REPOSITORY_CREDENTIAL_ID = credentials('GitCredential')
+
         REPOSITORY_URL = credentials('UserServiceRepositoryUrl')
         TARGET_BRANCH = 'master'
 
@@ -38,7 +39,6 @@ pipeline {
             steps {
                 git url: "$REPOSITORY_URL",
                     branch: "$TARGET_BRANCH",
-                    credentialsId: "$REPOSITORY_CREDENTIAL_ID"
                 sh "ls -al"
             }
             post {
@@ -87,7 +87,7 @@ pipeline {
                     echo "Success Delete Docker Config"
 
                     docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:AWSCredentials") {
-                      def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:${env.BUILD_NUMBER}")
+                      def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:1.0.${env.BUILD_NUMBER}")
                       image.push()
                     }
 
@@ -140,18 +140,20 @@ pipeline {
 
         stage('Update Helm Chart And Push') {
             steps {
-                // Helm 차트의 이미지 버전 정보 변경
-                // sh "sed -i 's/tag: .*/tag: v${env.BUILD_NUMBER}/' values.yaml"
-                sh "ls -al"
-                // 변경된 Helm 차트 파일 커밋
-                // gitCommit('Update Helm chart')
+                script {
+                    def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
+                    dir(helmWorkSpacePath) {
+                        sh "sed -i 's/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml"
+                        gitCommit('Update Helm chart ${IMAGE_NAME}: 1.0.${env.BUILD_NUMBER}')
+                    }
+                }
             }
 
             post {
                 always {
                     // 변경된 Helm 차트 파일 커밋 푸쉬
-                    // gitPush()
-                    echo "Helm Chart Update"
+                    echo "Push Helm Chart..."
+                    gitPush()
                 }
 
                 success {
