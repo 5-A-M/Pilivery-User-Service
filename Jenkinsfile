@@ -22,6 +22,8 @@ pipeline {
         ECR_PATH = credentials('ecrPath')
         IMAGE_NAME = 'user-service'
         REGION = credentials('region')
+
+        APP_VERSION = '1.0.0'
     }
     stages{
         stage('Clean Workspace') {
@@ -91,7 +93,7 @@ pipeline {
                     echo "Success Delete Docker Config"
 
                     docker.withRegistry("https://${ECR_PATH}", "ecr:${REGION}:AWSCredentials") {
-                      def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:1.0.${env.BUILD_NUMBER}")
+                      def image = docker.build("${ECR_PATH}/${IMAGE_NAME}:${APP_VERSION}${env.BUILD_NUMBER}")
                       image.push()
                     }
 
@@ -148,11 +150,11 @@ pipeline {
                     def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
                     dir(helmWorkSpacePath) {
                       sh "git remote add helm ${HELM_REPOSITORY_URL}"
-                      sh "sed -i 's/tag: .*/tag: 1.0.${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml"
+                      sh "sed -i 's/tag: .*/tag: ${APP_VERSION}${env.BUILD_NUMBER}/' ${IMAGE_NAME}-helm/values.yaml"
                       sh "git config user.email '${GIT_EMAIL}'"
                       sh "git config user.name '${GIT_USERNAME}'"
                       sh "git add ${IMAGE_NAME}-helm/values.yaml"
-                      sh "git commit -m 'Update Helm Chart ${IMAGE_NAME}:${env.BUILD_NUMBER}'"
+                      sh "git commit -m 'Update Helm Chart ${IMAGE_NAME}:${APP_VERSION}${env.BUILD_NUMBER}'"
                       sh "git push helm ${HELM_TARGET_BRANCH}"
                     }
                 }
