@@ -154,6 +154,7 @@ pipeline {
                           git config user.name '${GIT_USERNAME}'
                           git add ${IMAGE_NAME}-helm/values.yaml
                           git commit -m 'Update Helm Chart ${IMAGE_NAME}:${env.BUILD_NUMBER}'
+                          git push helm ${HELM_TARGET_BRANCH}
                         '''
                     }
                 }
@@ -171,16 +172,4 @@ pipeline {
             }
         }
     }
-}
-
-def gitCommit(message) {
-  sh "git remote add origin ${HELM_REPOSITORY_URL}"
-  sh "git config user.email '${GIT_EMAIL}'"
-  sh "git config user.name '${GIT_USERNAME}'"
-  sh "git add ${IMAGE_NAME}-helm/values.yaml"
-  sh "git commit -m '${message}'"
-}
-
-def gitPush() {
-  sh "git push helm ${HELM_TARGET_BRANCH}"
 }
