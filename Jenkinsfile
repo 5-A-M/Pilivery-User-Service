@@ -107,7 +107,7 @@ pipeline {
             steps {
                 script {
                     def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
-                    dir(workspacePath) {
+                    dir(helmWorkSpacePath) {
                         echo '*********Clean Workspace*********'
                         deleteDir()
                     }
@@ -126,12 +126,14 @@ pipeline {
 
         stage('Git Clone Helm Chart Repository') {
             steps {
-                def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
-                dir(workspacePath) {
-                    git url: "$HELM_REPOSITORY_URL",
-                        branch: "$HELM_TARGET_BRANCH",
-                        credentialsId: "$REPOSITORY_CREDENTIAL_ID"
-                    sh "ls -al"
+                script {
+                    def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
+                    dir(helmWorkSpacePath) {
+                        git url: "$HELM_REPOSITORY_URL",
+                            branch: "$HELM_TARGET_BRANCH",
+                            credentialsId: "$REPOSITORY_CREDENTIAL_ID"
+                        sh "ls -al"
+                    }
                 }
             }
         }
