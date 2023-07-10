@@ -8,6 +8,9 @@ pipeline {
         PROFILE = 'local'
 
         REPOSITORY_CREDENTIAL_ID = credentials('GitCredential')
+        GIT_EMAIL = credentials('GitEmail')
+        GIT_USERNAME = credentials('GitUsername')
+
 
         REPOSITORY_URL = credentials('UserServiceRepositoryUrl')
         TARGET_BRANCH = 'master'
@@ -169,8 +172,8 @@ pipeline {
 }
 
 def gitCommit(message) {
-  sh "git config user.email '5am-production@naver.com'"
-  sh "git config user.name '5am-production'"
+  sh "git config user.email '${GIT_EMAIL}'"
+  sh "git config user.name '${GIT_USERNAME}'"
   sh "git add values.yaml"
   sh "git commit -m '${message}'"
 }
