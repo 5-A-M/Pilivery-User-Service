@@ -107,7 +107,7 @@ pipeline {
             }
         }
 
-        stage("Clean Previous Workspace") {
+        stage("Clean Helm Workspace") {
             steps {
                 script {
                     def helmWorkSpacePath = "/var/lib/jenkins/workspace/helm"
