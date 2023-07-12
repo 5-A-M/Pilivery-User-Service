@@ -32,8 +32,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     @SneakyThrows
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        log.info("Enter User Authentication Filter With JWT Token");
+    public Authentication attemptAuthentication( HttpServletRequest request, HttpServletResponse response ) throws AuthenticationException{
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
 
@@ -44,7 +43,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication( HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult ) throws IOException, ServletException{
         log.info("로그인 성공");
         PrincipalDetails principal = (PrincipalDetails) authResult.getPrincipal();
         User user = principal.getUser();
@@ -52,11 +51,11 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = jwtToken.delegateAccessToken(user); //유저정보를 이용해 토큰생성
         String refreshToken = jwtToken.delegateRefreshToken(user);//리프레시 토큰 생성
 
-        response.setHeader("authorization", "Bearer " + accessToken); // 응답 헤더에 토큰을 담는다.
-        response.setHeader("refresh", refreshToken); //응답 헤더에 리프레시 토큰을 담는다.
+        response.setHeader("Authorization", "Bearer " + accessToken); // 응답 헤더에 토큰을 담는다.
+        response.setHeader("Refresh", refreshToken); //응답 헤더에 리프레시 토큰을 담는다.
         response.setHeader("userId", String.valueOf(user.getUserId()));
 
-        if (user.getDisplayName() != null) {
+        if(user.getDisplayName() != null){
             response.getWriter().write("로그인완료");
             return;
         }

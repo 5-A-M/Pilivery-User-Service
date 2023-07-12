@@ -70,16 +70,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     //회원가입할때도 여기로 온다.
     @Override
     protected boolean shouldNotFilter( HttpServletRequest request ) throws ServletException{
-        log.info("ShouldNotFilter Path: " + request.getRequestURI());
         String authorization = request.getHeader("Authorization"); // Authorization의 밸류값 획득
 
         if(authorization == null){
-            log.info("Authorization Header가 없는 사용자.");
+            log.info("Access From No Access Token User");
             return true; //true면 예외 처리가 된다.
         }
 
         if(! authorization.startsWith("Bearer ")){
-            log.info("만료된 JWT Token 사용자 접근: " + MalformedJwtException.class.getSimpleName());
+            log.error(MalformedJwtException.class.getSimpleName());
             return true;
         }
 
